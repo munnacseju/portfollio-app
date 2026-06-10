@@ -1,26 +1,30 @@
 import { getProducts } from './admin/actions';
 import Link from 'next/link';
 import { ProductList } from './ProductList';
+import { SearchBar } from './SearchBar';
 
-export default async function ShopPage() {
-  const products = await getProducts();
+export default async function ShopPage({ searchParams }: { searchParams: Promise<{ search?: string }> }) {
+  const { search } = await searchParams;
+  const products = await getProducts(search);
 
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
       <nav className="border-b border-zinc-800 p-6 flex justify-between items-center sticky top-0 bg-black/80 backdrop-blur-md z-50">
         <h1 className="text-2xl font-bold tracking-tighter">SHOPNO BUNI</h1>
-        <div className="flex gap-8 text-sm font-medium text-zinc-400">
-          <Link href="/" className="hover:text-white transition">Home</Link>
-          <Link href="#collections" className="hover:text-white transition">Collections</Link>
-          <Link href="/admin" className="hover:text-white transition">Admin</Link>
+        <div className="flex gap-4 md:gap-8 items-center">
+          <SearchBar />
+          <div className="hidden md:flex gap-8 text-sm font-medium text-zinc-400">
+            <Link href="/" className="hover:text-white transition">Home</Link>
+            <Link href="#collections" className="hover:text-white transition">Collections</Link>
+            <Link href="/admin" className="hover:text-white transition">Admin</Link>
+          </div>
         </div>
       </nav>
 
       {/* Hero Section */}
       <section className="py-24 px-6 text-center border-b border-zinc-800">
-        <h2 className="text-6xl md:text-8xl font-bold mb-6 tracking-tighter">আমাদের স্বপ্নবুনি - Amader Shopnobuni 
-s</h2>
+        <h2 className="text-6xl md:text-8xl font-bold mb-6 tracking-tighter">আমাদের স্বপ্নবুনি </h2>
         <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-12">
           Discover our exclusive collection of fine jewelry, where every piece tells a story of dreams and artistry.
         </p>

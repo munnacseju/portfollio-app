@@ -52,6 +52,24 @@ export default function NewProductPage() {
           </div>
 
           <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-zinc-400 mb-4">Product Tags</label>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {[
+                { id: 'isTopSeller', label: 'Top Seller' },
+                { id: 'isNew', label: 'New Product' },
+                { id: 'isPopular', label: 'Popular' },
+                { id: 'isEidCollection', label: 'Eid Collection' },
+                { id: 'isBoishakhiCollection', label: 'Boishakhi Collection' },
+              ].map(tag => (
+                <label key={tag.id} className="flex items-center gap-2 cursor-pointer group">
+                  <input type="checkbox" name={tag.id} value="true" className="w-5 h-5 bg-zinc-800 border-zinc-700 rounded focus:ring-0 text-white" />
+                  <span className="text-sm text-zinc-400 group-hover:text-white transition">{tag.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="md:col-span-2">
             <label className="block text-sm font-medium text-zinc-400 mb-2">Description</label>
             <textarea name="description" rows={4} className="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:border-white outline-none" placeholder="Product details..." />
           </div>

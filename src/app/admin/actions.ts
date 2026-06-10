@@ -61,6 +61,14 @@ export async function createProduct(formData: FormData) {
   const price = parseFloat(formData.get('price') as string);
   const discount = parseFloat(formData.get('discount') as string) || 0;
   
+  const tags = {
+    isTopSeller: formData.get('isTopSeller') === 'true',
+    isNew: formData.get('isNew') === 'true',
+    isPopular: formData.get('isPopular') === 'true',
+    isEidCollection: formData.get('isEidCollection') === 'true',
+    isBoishakhiCollection: formData.get('isBoishakhiCollection') === 'true',
+  };
+
   const imageFiles = formData.getAll('images') as File[];
   const videoFile = formData.get('video') as File;
 
@@ -84,7 +92,8 @@ export async function createProduct(formData: FormData) {
       price,
       discount,
       images: imageUrls,
-      video: videoUrl
+      video: videoUrl,
+      tags
     }]);
 
   if (error) {
@@ -96,11 +105,17 @@ export async function createProduct(formData: FormData) {
   revalidatePath('/admin');
 }
 
-export async function getProducts() {
-  const { data, error } = await supabaseAdmin
+export async function getProducts(query?: string) {
+  let request = supabaseAdmin
     .from('products')
     .select('*')
     .order('created_at', { ascending: false });
+
+  if (query) {
+    request = request.ilike('title', `%${query}%`);
+  }
+
+  const { data, error } = await request;
 
   if (error) {
     console.error('Fetch products error:', error);
@@ -156,6 +171,14 @@ export async function updateProduct(id: string, formData: FormData) {
   const price = parseFloat(formData.get('price') as string);
   const discount = parseFloat(formData.get('discount') as string) || 0;
   
+  const tags = {
+    isTopSeller: formData.get('isTopSeller') === 'true',
+    isNew: formData.get('isNew') === 'true',
+    isPopular: formData.get('isPopular') === 'true',
+    isEidCollection: formData.get('isEidCollection') === 'true',
+    isBoishakhiCollection: formData.get('isBoishakhiCollection') === 'true',
+  };
+
   const imageFiles = formData.getAll('images') as File[];
   const videoFile = formData.get('video') as File;
   const existingImages = JSON.parse(formData.get('existingImages') as string || '[]');
@@ -181,7 +204,8 @@ export async function updateProduct(id: string, formData: FormData) {
       price,
       discount,
       images: imageUrls,
-      video: videoUrl
+      video: videoUrl,
+      tags
     })
     .eq('id', id);
 

@@ -40,6 +40,24 @@ export const ProductList = ({ products }: { products: any[] }) => {
                           -{product.discount}% OFF
                         </div>
                       )}
+                      
+                      <div className="absolute top-4 right-4 flex flex-col gap-2 items-end z-10">
+                        {product.tags?.isTopSeller && (
+                          <span className="bg-yellow-500 text-black text-[8px] px-2 py-1 rounded-full font-black uppercase shadow-lg">Top Seller</span>
+                        )}
+                        {product.tags?.isNew && (
+                          <span className="bg-blue-500 text-white text-[8px] px-2 py-1 rounded-full font-black uppercase shadow-lg">New</span>
+                        )}
+                        {product.tags?.isPopular && (
+                          <span className="bg-pink-500 text-white text-[8px] px-2 py-1 rounded-full font-black uppercase shadow-lg">Popular</span>
+                        )}
+                        {product.tags?.isEidCollection && (
+                          <span className="bg-green-600 text-white text-[8px] px-2 py-1 rounded-full font-black uppercase shadow-lg">Eid Collection</span>
+                        )}
+                        {product.tags?.isBoishakhiCollection && (
+                          <span className="bg-orange-500 text-white text-[8px] px-2 py-1 rounded-full font-black uppercase shadow-lg">Boishakhi</span>
+                        )}
+                      </div>
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-6">
                         <button 
                           onClick={() => setSelectedProduct(product)}
