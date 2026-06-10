@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import { OrderModal } from './OrderModal';
+import { MediaModal } from './MediaModal';
 
 export const ProductList = ({ products }: { products: any[] }) => {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [mediaView, setMediaView] = useState<{ type: 'video' | 'photo', data: any, title: string } | null>(null);
   const categories = ['Churi', 'Golar Har', 'Ear Ring', 'Finger Ring', 'Payel', 'Others'];
 
   return (
@@ -58,13 +60,32 @@ export const ProductList = ({ products }: { products: any[] }) => {
                           <span className="bg-orange-500 text-white text-[7px] md:text-[8px] px-2 py-0.5 md:py-1 rounded-full font-black uppercase shadow-lg">Boishakhi</span>
                         )}
                       </div>
-                      <div className="absolute inset-0 bg-black/40 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity flex items-end md:items-center justify-center p-4 md:p-6">
+                      <div className="absolute inset-0 bg-black/40 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 md:p-6 gap-3">
                         <button 
                           onClick={() => setSelectedProduct(product)}
                           className="w-full py-3 md:py-4 bg-white text-black font-black uppercase tracking-widest text-xs md:text-sm rounded-xl transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl"
                         >
                           Order Now
                         </button>
+                        
+                        <div className="flex w-full gap-2 transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75">
+                          {product.images?.length > 0 && (
+                            <button 
+                              onClick={() => setMediaView({ type: 'photo', data: product.images, title: product.title })}
+                              className="flex-grow py-2 bg-zinc-900/80 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-zinc-800 border border-zinc-700 transition"
+                            >
+                              See Photos
+                            </button>
+                          )}
+                          {product.video && (
+                            <button 
+                              onClick={() => setMediaView({ type: 'video', data: product.video, title: product.title })}
+                              className="flex-grow py-2 bg-zinc-900/80 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-zinc-800 border border-zinc-700 transition"
+                            >
+                              See Video
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -91,6 +112,15 @@ export const ProductList = ({ products }: { products: any[] }) => {
         <OrderModal 
           product={selectedProduct} 
           onClose={() => setSelectedProduct(null)} 
+        />
+      )}
+
+      {mediaView && (
+        <MediaModal 
+          type={mediaView.type}
+          data={mediaView.data}
+          title={mediaView.title}
+          onClose={() => setMediaView(null)}
         />
       )}
     </>
