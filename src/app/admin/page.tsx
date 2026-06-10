@@ -1,4 +1,4 @@
-import { getProducts, getOrders, logoutAdmin } from './actions';
+import { getProducts, getOrders, logoutAdmin, deleteProduct } from './actions';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -12,6 +12,13 @@ export default async function AdminDashboard() {
     'use server';
     await logoutAdmin();
     redirect('/admin/login');
+  }
+
+  async function handleDelete(id: string) {
+    'use server';
+    if (confirm('Are you sure you want to delete this product?')) {
+      await deleteProduct(id);
+    }
   }
 
   return (
@@ -49,12 +56,25 @@ export default async function AdminDashboard() {
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-zinc-600 uppercase text-[8px] md:text-xs">No Image</div>
                       )}
-                      <Link 
-                        href={`/admin/products/edit/${product.id}`}
-                        className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <span className="bg-white text-black px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold text-[10px] md:text-sm">Edit</span>
-                      </Link>
+                      <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity gap-3">
+                        <Link 
+                          href={`/admin/products/edit/${product.id}`}
+                          className="bg-white text-black px-4 py-2 rounded-full font-bold text-xs"
+                        >
+                          Edit
+                        </Link>
+                        <form action={async () => {
+                          'use server';
+                          await deleteProduct(product.id);
+                        }}>
+                          <button 
+                            type="submit"
+                            className="bg-red-600 text-white px-4 py-2 rounded-full font-bold text-xs"
+                          >
+                            Delete
+                          </button>
+                        </form>
+                      </div>
                     </div>
                     <div className="p-3 md:p-4">
                       <h3 className="font-bold truncate text-xs md:text-sm mb-1">{product.title}</h3>

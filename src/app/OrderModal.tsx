@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createOrder } from '@/app/admin/actions';
+import { VideoPlayer } from './VideoPlayer';
 
 export const OrderModal = ({ product, onClose }: { product: any, onClose: () => void }) => {
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,13 @@ export const OrderModal = ({ product, onClose }: { product: any, onClose: () => 
           <button onClick={onClose} className="text-zinc-500 hover:text-white p-2">✕</button>
         </div>
 
-        <div className="p-4 md:p-6">
+        <div className="p-4 md:p-6 max-h-[70vh] overflow-y-auto">
+          {product.video && (
+            <div className="mb-6">
+              <VideoPlayer url={product.video} />
+            </div>
+          )}
+          
           {success ? (
             <div className="text-center py-6 md:py-8">
               <div className="w-12 h-12 md:w-16 md:h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-xl md:text-2xl">✓</div>

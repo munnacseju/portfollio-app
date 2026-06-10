@@ -71,14 +71,15 @@ export async function createProduct(formData: FormData) {
 
   const imageFiles = formData.getAll('images') as File[];
   const videoFile = formData.get('video') as File;
+  const videoLink = formData.get('videoLink') as string;
 
   let imageUrls: string[] = [];
   if (imageFiles.length > 0 && imageFiles[0].size > 0) {
     imageUrls = await uploadMedia(imageFiles);
   }
 
-  let videoUrl = '';
-  if (videoFile && videoFile.size > 0) {
+  let videoUrl = videoLink || '';
+  if (!videoUrl && videoFile && videoFile.size > 0) {
     const uploadedVideos = await uploadMedia([videoFile]);
     videoUrl = uploadedVideos[0] || '';
   }
@@ -181,6 +182,7 @@ export async function updateProduct(id: string, formData: FormData) {
 
   const imageFiles = formData.getAll('images') as File[];
   const videoFile = formData.get('video') as File;
+  const videoLink = formData.get('videoLink') as string;
   const existingImages = JSON.parse(formData.get('existingImages') as string || '[]');
 
   let imageUrls = [...existingImages];
@@ -189,8 +191,10 @@ export async function updateProduct(id: string, formData: FormData) {
     imageUrls = [...imageUrls, ...uploadedImages];
   }
 
-  let videoUrl = formData.get('existingVideo') as string || '';
-  if (videoFile && videoFile.size > 0) {
+  let videoUrl = videoLink || formData.get('existingVideo') as string || '';
+  if (videoLink) {
+    videoUrl = videoLink;
+  } else if (videoFile && videoFile.size > 0) {
     const uploadedVideos = await uploadMedia([videoFile]);
     videoUrl = uploadedVideos[0] || '';
   }
