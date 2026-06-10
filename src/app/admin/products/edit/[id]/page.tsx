@@ -8,16 +8,54 @@ import Link from 'next/link';
 export default function EditProductPage() {
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState<any>(null);
+  const [videoLink, setVideoLink] = useState('');
+  const [videoStatus, setVideoStatus] = useState<'idle' | 'loading' | 'valid' | 'invalid'>('idle');
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
 
   useEffect(() => {
-    getProductById(id).then(setProduct);
+    getProductById(id).then((data) => {
+      setProduct(data);
+      if (data?.video?.startsWith('http') && !data?.video?.includes('supabase')) {
+        setVideoLink(data.video);
+        setVideoStatus('valid');
+      }
+    });
   }, [id]);
+
+  const validateVideoLink = (url: string) => {
+    if (!url) {
+      setVideoStatus('idle');
+      return;
+    }
+    setVideoStatus('loading');
+    
+    setTimeout(() => {
+      const isYouTube = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/.test(url);
+      const isFacebook = url.includes('facebook.com');
+      
+      if (isYouTube || isFacebook) {
+        setVideoStatus('valid');
+      } else {
+        setVideoStatus('invalid');
+      }
+    }, 500);
+  };
+
+  useEffect(() => {
+    if (product && videoLink !== (product.video?.startsWith('http') && !product.video?.includes('supabase') ? product.video : '')) {
+      const timer = setTimeout(() => validateVideoLink(videoLink), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [videoLink, product]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (videoStatus === 'invalid') {
+      alert('Please provide a valid video link or remove it.');
+      return;
+    }
     setLoading(true);
     
     const formData = new FormData(e.currentTarget);
@@ -150,12 +188,29 @@ export default function EditProductPage() {
             </div>
             <div>
               <label className="block text-xs font-bold text-zinc-500 uppercase mb-2">Option 2: Social Link</label>
-              <input 
-                name="videoLink" 
-                defaultValue={product.video?.startsWith('http') && !product.video?.includes('supabase') ? product.video : ''}
-                className="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:border-white outline-none text-sm" 
-                placeholder="YouTube or Facebook link" 
-              />
+              <div className="relative">
+                <input 
+                  name="videoLink" 
+                  value={videoLink}
+                  onChange={(e) => setVideoLink(e.target.value)}
+                  className={`w-full p-3 bg-zinc-800 border ${videoStatus === 'invalid' ? 'border-red-500' : 'border-zinc-700'} rounded-lg focus:border-white outline-none text-sm pr-10`} 
+                  placeholder="YouTube or Facebook link" 
+                />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  {videoStatus === 'loading' && (
+                    <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                  )}
+                  {videoStatus === 'valid' && (
+                    <span className="text-green-500 text-lg">✓</span>
+                  )}
+                  {videoStatus === 'invalid' && (
+                    <span className="text-red-500 text-lg">⚠</span>
+                  )}
+                </div>
+              </div>
+              {videoStatus === 'invalid' && (
+                <p className="text-[10px] text-red-500 mt-1">Invalid video link. Please check the URL.</p>
+              )}
             </div>
           </div>
           <p className="text-[10px] text-zinc-600">Tip: Social links are recommended for faster loading. Link will take priority if both are provided.</p>
