@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { createProduct } from '@/app/admin/actions';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { VideoPlayer } from '@/app/VideoPlayer';
 
 export default function NewProductPage() {
   const [loading, setLoading] = useState(false);
@@ -154,6 +155,14 @@ export default function NewProductPage() {
               )}
             </div>
           </div>
+          
+          {videoStatus === 'valid' && (
+            <div className="max-w-xs mx-auto">
+              <p className="text-[10px] text-zinc-500 mb-2 text-center uppercase font-bold">Live Preview</p>
+              <VideoPlayer url={videoLink} />
+            </div>
+          )}
+          
           <p className="text-[10px] text-zinc-600">Tip: Social links are recommended for faster loading. Link will take priority if both are provided.</p>
         </div>
         </div>
