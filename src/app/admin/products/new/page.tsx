@@ -90,8 +90,14 @@ export default function NewProductPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-400 mb-2">Video Attachment</label>
+            <label className="block text-sm font-medium text-zinc-400 mb-2">Video File Upload</label>
             <input name="video" type="file" accept="video/*" className="w-full text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700" />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-zinc-400 mb-2">Social Video Link (YouTube / Facebook)</label>
+            <input name="videoLink" className="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:border-white outline-none" placeholder="Paste link here (e.g. https://www.youtube.com/watch?v=...)" />
+            <p className="text-[10px] text-zinc-500 mt-1">If both file and link are provided, the link will be used.</p>
           </div>
         </div>
 
