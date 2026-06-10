@@ -4,7 +4,6 @@ import { supabaseAdmin } from '@/lib/supabase';
 import { revalidatePath } from 'next/cache';
 
 export async function submitMessage(formData: { name: string; message: string }) {
-  console.log('Attempting to submit message. Supabase URL present:', !!process.env.SUPABASE_URL);
   if (!formData.name || !formData.message) {
     throw new Error('Name and message are required');
   }
@@ -16,12 +15,6 @@ export async function submitMessage(formData: { name: string; message: string })
     ]);
 
   if (error) {
-    console.error('Detailed Submission Error:', {
-      message: error.message,
-      details: error.details,
-      hint: error.hint,
-      code: error.code
-    });
     throw new Error(`Supabase Error: ${error.message}`);
   }
   

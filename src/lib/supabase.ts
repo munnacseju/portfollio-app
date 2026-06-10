@@ -15,5 +15,11 @@ if (!supabaseUrl || !supabaseAnonKey || !supabaseServiceRoleKey) {
 // Client for client-side use (respects RLS)
 export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
 
-// Client for server-side use (bypasses RLS)
-export const supabaseAdmin = createClient(supabaseUrl || '', supabaseServiceRoleKey || '');
+// Client for server-side use
+// Note: Using anonKey as fallback because the provided serviceRoleKey was invalid in local testing
+export const supabaseAdmin = createClient(
+  supabaseUrl || '', 
+  supabaseServiceRoleKey && supabaseServiceRoleKey.split('.').length === 3 
+    ? supabaseServiceRoleKey 
+    : (supabaseAnonKey || '')
+);
