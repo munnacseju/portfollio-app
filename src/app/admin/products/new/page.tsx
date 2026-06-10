@@ -89,16 +89,20 @@ export default function NewProductPage() {
             <input name="images" type="file" multiple accept="image/*" className="w-full text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700" />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-zinc-400 mb-2">Video File Upload</label>
-            <input name="video" type="file" accept="video/*" className="w-full text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700" />
+        <div className="md:col-span-2 space-y-4 pt-4 border-t border-zinc-800">
+          <h3 className="text-sm font-black uppercase tracking-widest text-white">Product Video</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-xs font-bold text-zinc-500 uppercase mb-2">Option 1: Upload File</label>
+              <input name="video" type="file" accept="video/*" className="w-full text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700" />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-zinc-500 uppercase mb-2">Option 2: Social Link</label>
+              <input name="videoLink" className="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:border-white outline-none text-sm" placeholder="YouTube or Facebook link" />
+            </div>
           </div>
-
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-zinc-400 mb-2">Social Video Link (YouTube / Facebook)</label>
-            <input name="videoLink" className="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:border-white outline-none" placeholder="Paste link here (e.g. https://www.youtube.com/watch?v=...)" />
-            <p className="text-[10px] text-zinc-500 mt-1">If both file and link are provided, the link will be used.</p>
-          </div>
+          <p className="text-[10px] text-zinc-600">Tip: Social links are recommended for faster loading. Link will take priority if both are provided.</p>
+        </div>
         </div>
 
         <button 
