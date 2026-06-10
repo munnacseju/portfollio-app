@@ -40,6 +40,18 @@ export default function NewProductPage() {
           </div>
 
           <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-zinc-400 mb-2">Category</label>
+            <select name="category" required className="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:border-white outline-none">
+              <option value="Churi">Churi</option>
+              <option value="Golar Har">Golar Har</option>
+              <option value="Ear Ring">Ear Ring</option>
+              <option value="Finger Ring">Finger Ring</option>
+              <option value="Payel">Payel</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+
+          <div className="md:col-span-2">
             <label className="block text-sm font-medium text-zinc-400 mb-2">Description</label>
             <textarea name="description" rows={4} className="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:border-white outline-none" placeholder="Product details..." />
           </div>

@@ -19,7 +19,8 @@ export default async function ShopPage() {
 
       {/* Hero Section */}
       <section className="py-24 px-6 text-center border-b border-zinc-800">
-        <h2 className="text-6xl md:text-8xl font-bold mb-6 tracking-tighter">Handcrafted Elegance</h2>
+        <h2 className="text-6xl md:text-8xl font-bold mb-6 tracking-tighter">আমাদের স্বপ্নবুনি - Amader Shopnobuni 
+s</h2>
         <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-12">
           Discover our exclusive collection of fine jewelry, where every piece tells a story of dreams and artistry.
         </p>

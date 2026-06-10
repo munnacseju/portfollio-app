@@ -57,6 +57,7 @@ export async function createProduct(formData: FormData) {
 
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
+  const category = formData.get('category') as string;
   const price = parseFloat(formData.get('price') as string);
   const discount = parseFloat(formData.get('discount') as string) || 0;
   
@@ -79,6 +80,7 @@ export async function createProduct(formData: FormData) {
     .insert([{
       title,
       description,
+      category,
       price,
       discount,
       images: imageUrls,
@@ -150,6 +152,7 @@ export async function updateProduct(id: string, formData: FormData) {
 
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
+  const category = formData.get('category') as string;
   const price = parseFloat(formData.get('price') as string);
   const discount = parseFloat(formData.get('discount') as string) || 0;
   
@@ -174,6 +177,7 @@ export async function updateProduct(id: string, formData: FormData) {
     .update({
       title,
       description,
+      category,
       price,
       discount,
       images: imageUrls,
@@ -210,6 +214,8 @@ export async function createOrder(formData: FormData) {
   const customerName = formData.get('name') as string;
   const phone = formData.get('phone') as string;
   const address = formData.get('address') as string;
+  const quantity = parseInt(formData.get('quantity') as string) || 1;
+  const notes = formData.get('notes') as string;
 
   const { error } = await supabaseAdmin
     .from('orders')
@@ -217,7 +223,9 @@ export async function createOrder(formData: FormData) {
       product_id: productId,
       customer_name: customerName,
       phone,
-      address
+      address,
+      quantity,
+      notes
     }]);
 
   if (error) {
@@ -236,7 +244,7 @@ export async function getOrders() {
 
   const { data, error } = await supabaseAdmin
     .from('orders')
-    .select('*, products(title, price)')
+    .select('*, products(title, price, category)')
     .order('created_at', { ascending: false });
 
   if (error) {

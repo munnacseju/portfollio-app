@@ -47,13 +47,23 @@ export const OrderModal = ({ product, onClose }: { product: any, onClose: () => 
                 <label className="block text-xs font-bold text-zinc-500 uppercase mb-2">Your Name</label>
                 <input name="name" required className="w-full bg-zinc-800 border border-zinc-700 p-3 rounded-lg focus:border-white outline-none transition" placeholder="Enter your full name" />
               </div>
-              <div>
-                <label className="block text-xs font-bold text-zinc-500 uppercase mb-2">Phone Number</label>
-                <input name="phone" type="tel" required className="w-full bg-zinc-800 border border-zinc-700 p-3 rounded-lg focus:border-white outline-none transition" placeholder="e.g. 017XXXXXXXX" />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-zinc-500 uppercase mb-2">Phone Number</label>
+                  <input name="phone" type="tel" required className="w-full bg-zinc-800 border border-zinc-700 p-3 rounded-lg focus:border-white outline-none transition" placeholder="017XXXXXXXX" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-zinc-500 uppercase mb-2">Quantity</label>
+                  <input name="quantity" type="number" required min="1" defaultValue="1" className="w-full bg-zinc-800 border border-zinc-700 p-3 rounded-lg focus:border-white outline-none transition" />
+                </div>
               </div>
               <div>
                 <label className="block text-xs font-bold text-zinc-500 uppercase mb-2">Delivery Address</label>
-                <textarea name="address" required rows={3} className="w-full bg-zinc-800 border border-zinc-700 p-3 rounded-lg focus:border-white outline-none transition" placeholder="Enter your full shipping address" />
+                <textarea name="address" required rows={2} className="w-full bg-zinc-800 border border-zinc-700 p-3 rounded-lg focus:border-white outline-none transition" placeholder="Enter shipping address" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase mb-2">Special Notes (Size, Color, etc.)</label>
+                <textarea name="notes" rows={2} className="w-full bg-zinc-800 border border-zinc-700 p-3 rounded-lg focus:border-white outline-none transition" placeholder="Any special requests?" />
               </div>
               <div className="pt-4">
                 <button 
