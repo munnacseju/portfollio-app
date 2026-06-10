@@ -10,30 +10,30 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
-      <nav className="border-b border-zinc-800 p-6 flex justify-between items-center sticky top-0 bg-black/80 backdrop-blur-md z-50">
-        <h1 className="text-2xl font-bold tracking-tighter">SHOPNO BUNI</h1>
-        <div className="flex gap-4 md:gap-8 items-center">
+      <nav className="border-b border-zinc-800 p-4 md:p-6 flex flex-col md:flex-row justify-between items-center sticky top-0 bg-black/80 backdrop-blur-md z-50 gap-4">
+        <h1 className="text-xl md:text-2xl font-bold tracking-tighter">SHOPNO BUNI</h1>
+        <div className="flex w-full md:w-auto gap-4 items-center justify-between md:justify-end">
           <SearchBar />
-          <div className="hidden md:flex gap-8 text-sm font-medium text-zinc-400">
+          <div className="flex gap-4 md:gap-8 text-xs md:text-sm font-medium text-zinc-400">
             <Link href="/" className="hover:text-white transition">Home</Link>
-            <Link href="#collections" className="hover:text-white transition">Collections</Link>
             <Link href="/admin" className="hover:text-white transition">Admin</Link>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="py-24 px-6 text-center border-b border-zinc-800">
-        <h2 className="text-6xl md:text-8xl font-bold mb-6 tracking-tighter">আমাদের স্বপ্নবুনি </h2>
-        <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-12">
+      <section className="py-16 md:py-24 px-6 text-center border-b border-zinc-800">
+        <h2 className="text-4xl md:text-8xl font-bold mb-6 tracking-tighter leading-tight">Handcrafted Elegance</h2>
+        <p className="text-base md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
           Discover our exclusive collection of fine jewelry, where every piece tells a story of dreams and artistry.
         </p>
-        <div className="flex justify-center gap-4">
-          <Link href="#collections" className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-zinc-200 transition">
+        <div className="flex justify-center">
+          <Link href="#collections" className="w-full md:w-auto px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-zinc-200 transition">
             Explore Collection
           </Link>
         </div>
       </section>
+
 
       {/* Collections / Products Grid */}
       <section id="collections" className="py-24 px-6 max-w-7xl mx-auto">

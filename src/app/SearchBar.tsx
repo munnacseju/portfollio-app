@@ -18,13 +18,13 @@ export const SearchBar = () => {
   };
 
   return (
-    <form onSubmit={handleSearch} className="relative group">
+    <form onSubmit={handleSearch} className="relative group flex-grow md:flex-grow-0">
       <input 
         type="text" 
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search jewelry..." 
-        className="bg-zinc-900 border border-zinc-800 text-sm py-2 px-4 pr-10 rounded-full focus:outline-none focus:border-zinc-500 w-40 md:w-64 transition-all duration-300"
+        className="bg-zinc-900 border border-zinc-800 text-xs md:text-sm py-2 px-4 pr-10 rounded-full focus:outline-none focus:border-zinc-500 w-full md:w-64 transition-all duration-300"
       />
       <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 group-hover:text-white transition">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
