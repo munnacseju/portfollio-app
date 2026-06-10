@@ -141,3 +141,108 @@ export async function loginAdmin(secret: string) {
 export async function logoutAdmin() {
   (await cookies()).delete('admin_secret');
 }
+
+export async function updateProduct(id: string, formData: FormData) {
+  const adminSecret = (await cookies()).get('admin_secret')?.value;
+  if (adminSecret !== process.env.ADMIN_SECRET) {
+    throw new Error('Unauthorized');
+  }
+
+  const title = formData.get('title') as string;
+  const description = formData.get('description') as string;
+  const price = parseFloat(formData.get('price') as string);
+  const discount = parseFloat(formData.get('discount') as string) || 0;
+  
+  const imageFiles = formData.getAll('images') as File[];
+  const videoFile = formData.get('video') as File;
+  const existingImages = JSON.parse(formData.get('existingImages') as string || '[]');
+
+  let imageUrls = [...existingImages];
+  if (imageFiles.length > 0 && imageFiles[0].size > 0) {
+    const uploadedImages = await uploadMedia(imageFiles);
+    imageUrls = [...imageUrls, ...uploadedImages];
+  }
+
+  let videoUrl = formData.get('existingVideo') as string || '';
+  if (videoFile && videoFile.size > 0) {
+    const uploadedVideos = await uploadMedia([videoFile]);
+    videoUrl = uploadedVideos[0] || '';
+  }
+
+  const { error } = await supabaseAdmin
+    .from('products')
+    .update({
+      title,
+      description,
+      price,
+      discount,
+      images: imageUrls,
+      video: videoUrl
+    })
+    .eq('id', id);
+
+  if (error) {
+    console.error('Product update error:', error);
+    throw new Error('Failed to update product');
+  }
+
+  revalidatePath('/');
+  revalidatePath('/admin');
+}
+
+export async function getProductById(id: string) {
+  const { data, error } = await supabaseAdmin
+    .from('products')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error('Fetch product error:', error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function createOrder(formData: FormData) {
+  const productId = formData.get('productId') as string;
+  const customerName = formData.get('name') as string;
+  const phone = formData.get('phone') as string;
+  const address = formData.get('address') as string;
+
+  const { error } = await supabaseAdmin
+    .from('orders')
+    .insert([{
+      product_id: productId,
+      customer_name: customerName,
+      phone,
+      address
+    }]);
+
+  if (error) {
+    console.error('Order creation error:', error);
+    throw new Error('Failed to place order');
+  }
+
+  revalidatePath('/admin');
+}
+
+export async function getOrders() {
+  const adminSecret = (await cookies()).get('admin_secret')?.value;
+  if (adminSecret !== process.env.ADMIN_SECRET) {
+    throw new Error('Unauthorized');
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from('orders')
+    .select('*, products(title, price)')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Fetch orders error:', error);
+    return [];
+  }
+
+  return data;
+}
